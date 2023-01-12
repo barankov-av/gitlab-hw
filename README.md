@@ -22,7 +22,7 @@
 
 #### Скрипт
 
-#!/bin/bash\    
+#!/bin/bash    
 if [ "$1" = 1 ]; then  
 echo "Barankov Anton Vladislavovich"  
 fi  
@@ -38,7 +38,7 @@ fi
 
 #### Bash-скрипт
 
-#!/bin/bash\  
+#!/bin/bash 
 if [ "$1" = 1 ]; then  
 echo "Barankov Anton Vladislavovich"  
 elif [ "$1" = 2 ]; then  
