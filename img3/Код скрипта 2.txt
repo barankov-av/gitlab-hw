@@ -1,0 +1,13 @@
+!/bin/bash
+if [ "$1" = 1 ]; then
+echo "Barankov Anton Vladislavovich"
+elif [ "$1" = 2 ]; then
+date "+%m-%d-%Y"
+elif [ "$1" = '-ping' ]; then
+ping -c 1 "$2" | tail -1| awk '{print $4}' | cut -d '/' -f 2
+elif [ "$1" = '-simple_print' ]; then
+echo $2
+else
+echo unknown input: $1 
+fi
+

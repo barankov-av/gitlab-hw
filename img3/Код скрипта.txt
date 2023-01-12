@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ "$1" = 1 ]; then
+echo "Barankov Anton Vladislavovich"
+fi
+if [ "$1" = 2 ]; then
+date "+%m-%d-%Y"
+fi
+
+
+
