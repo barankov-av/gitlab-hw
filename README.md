@@ -22,13 +22,13 @@
 
 #### Скрипт
 
-#!/bin/bash
-if [ "$1" = 1 ]; then
-echo "Barankov Anton Vladislavovich"
-fi
-if [ "$1" = 2 ]; then
-date "+%m-%d-%Y"
-fi
+#!/bin/bash\    
+if [ "$1" = 1 ]; then  
+echo "Barankov Anton Vladislavovich"  
+fi  
+if [ "$1" = 2 ]; then  
+date "+%m-%d-%Y"  
+fi  
 
 ![Скриншот](img3/8.jpg)
 
@@ -38,18 +38,18 @@ fi
 
 #### Bash-скрипт
 
-!/bin/bash
-if [ "$1" = 1 ]; then
-echo "Barankov Anton Vladislavovich"
-elif [ "$1" = 2 ]; then
-date "+%m-%d-%Y"
-elif [ "$1" = '-ping' ]; then
-ping -c 1 "$2" | tail -1| awk '{print $4}' | cut -d '/' -f 2
-elif [ "$1" = '-simple_print' ]; then
-echo $2
-else
-echo unknown input: $1 
-fi
+#!/bin/bash\  
+if [ "$1" = 1 ]; then  
+echo "Barankov Anton Vladislavovich"  
+elif [ "$1" = 2 ]; then  
+date "+%m-%d-%Y"  
+elif [ "$1" = '-ping' ]; then  
+ping -c 1 "$2" | tail -1| awk '{print $4}' | cut -d '/' -f 2  
+elif [ "$1" = '-simple_print' ]; then  
+echo $2  
+else  
+echo unknown input: $1  
+fi  
 
 ![Скриншот](img3/9.jpg)
 ![Скриншот](img3/10.jpg)
@@ -58,22 +58,22 @@ fi
 
 ### Python-скрипт
 
-import sys
-import os
-import re
-import datetime
-if (sys.argv[1] == '-ping'): 
-    result=os.popen("ping -c 1 " + sys.argv[2]).read()
-    result=re.findall(r"time=(.*) ms", result)
-    print(result[0])
-elif (sys.argv[1] == '-simple_print'): 
-    print(sys.argv[2])
-elif (sys.argv[1] == '1'): 
-    print('Barankov Anton Vladislavovich')
-elif (sys.argv[1] == '2'): 
-    print(datetime.date.today())
-else: 
-    print(f"unknown input: {sys.argv[1]}")
+import sys  
+import os  
+import re  
+import datetime  
+if (sys.argv[1] == '-ping'):  
+    result=os.popen("ping -c 1 " + sys.argv[2]).read()  
+    result=re.findall(r"time=(.*) ms", result)  
+    print(result[0])  
+elif (sys.argv[1] == '-simple_print'):  
+    print(sys.argv[2])  
+elif (sys.argv[1] == '1'):  
+    print('Barankov Anton Vladislavovich')  
+elif (sys.argv[1] == '2'):  
+    print(datetime.date.today())  
+else:  
+    print(f"unknown input: {sys.argv[1]}")  
 
 ### Задание 8
 
