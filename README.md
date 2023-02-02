@@ -12,13 +12,14 @@
 
 ### Задание 2
 
-[bacula-dir.conf](img/bacula-dir.conf)
-[bacula-fd.conf](img/bacula-fd.conf)
-[bacula-sd.conf](img/bacula-sd.conf)
+[bacula-dir.conf](img/bacula-dir.conf)  
+[bacula-fd.conf](img/bacula-fd.conf)  
+[bacula-sd.conf](img/bacula-sd.conf)  
 ![Скриншот](img/1.jpg)
 
 ### Задание 3
 
+**Bold text**
 Файл rsyncd.conf  
 
 pid file = /var/run/rsyncd.pid  
@@ -36,6 +37,7 @@ use chroot = false
 auth users = backup  
 secrets file = /etc/rsyncd.scrt  
 
+**Bold text**
 Файл скрипта  
  
 #!/bin/bash  
