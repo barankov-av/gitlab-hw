@@ -19,8 +19,7 @@
 
 ### Задание 3
 
-**Bold text**
-Файл rsyncd.conf  
+**Файл rsyncd.conf**  
 
 pid file = /var/run/rsyncd.pid  
 log file = /var/log/rsyncd.log  
@@ -37,8 +36,7 @@ use chroot = false
 auth users = backup  
 secrets file = /etc/rsyncd.scrt  
 
-**Bold text**
-Файл скрипта  
+**Файл скрипта**  
  
 #!/bin/bash  
 date  
