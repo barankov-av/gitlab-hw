@@ -1,19 +1,25 @@
-# Домашнее задание к занятию "12.4. «SQL. Часть 2» - Баранков Антон"
+# Домашнее задание к занятию "12.5. «Индексы» - Баранков Антон"
 
 ### Задание 1
-SELECT st.staff_id, st.first_name, st.last_name, c.city, COUNT(cu.customer_id) AS customer_count  
-FROM store s  
-JOIN staff st ON s.store_id = st.store_id  
-JOIN address a ON s.address_id = a.address_id  
-JOIN city c ON a.city_id = c.city_id  
-JOIN customer cu ON s.store_id = cu.store_id  
-GROUP BY st.staff_id, st.first_name, st.last_name, c.city  
-HAVING customer_count > 300;  
+SELECT SUM(index_length) AS SUM_index, SUM(data_length + index_length) AS SUM_full, SUM(index_length)/SUM(data_length + index_length)*100 AS 'percent_index/full'  
+FROM information_schema.TABLES WHERE table_schema = 'sakila';  
+ 
 
 ### Задание 2
-SELECT COUNT(*) FROM film  
-WHERE length > (SELECT AVG(length) FROM film);  
+Для оптимизации:  
+использован оператор JOIN  
+убрана лишняя таблица film, так как она не используется в выражении select  
+оператор where заменен на условие в операторе join  
+операторы distinct и OVER заменены на group by и sum  
 
-### Задание 3
-SELECT DATE_FORMAT(payment_date, '%Y-%m') AS month, COUNT(*) AS rentals, SUM(amount) AS total_amount  
-FROM payment GROUP BY month ORDER BY total_amount DESC LIMIT 1;  
+Предлагаемый вариант кода и индекса:  
+
+alter table payment add index idx_rental_payments (payment_date, customer_id);  
+
+select concat(c.last_name, ' ', c.first_name), sum(p.amount)  
+from payment p  
+join rental r on p.payment_date = r.rental_date and date(p.payment_date) = '2005-07-30'  
+join customer c on r.customer_id = c.customer_id  
+join inventory i on i.inventory_id = r.inventory_id  
+join film f on i.film_id = f.film_id  
+group by c.last_name, c.first_name;  
