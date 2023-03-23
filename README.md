@@ -1,32 +1,18 @@
-# Домашнее задание к занятию "12.3. «SQL. Часть 1» - Баранков Антон"
+# Домашнее задание к занятию "12.4. «SQL. Часть 2» - Баранков Антон"
 
 ### Задание 1
-SELECT district FROM address  
-WHERE district LIKE 'K%a' AND district NOT LIKE '% %';  
+SELECT st.first_name, st.last_name, c.city, COUNT(*) AS customer_count FROM store s  
+JOIN staff st ON s.store_id = st.store_id  
+JOIN address a ON s.address_id = a.address_id  
+JOIN city c ON a.city_id = c.city_id  
+JOIN customer cu ON s.store_id = cu.store_id  
+GROUP BY st.first_name, st.last_name, c.city  
+HAVING COUNT(*) > 300;  
 
 ### Задание 2
-SELECT * FROM payment  
-WHERE amount > 10.00 AND payment_date BETWEEN '2005-06-15 00:00:00' AND '2005-06-18 23:59:59';  
+SELECT COUNT(*) FROM film  
+WHERE length > (SELECT AVG(length) FROM film);  
 
 ### Задание 3
-SELECT f.title, r.rental_date FROM film f  
-JOIN inventory i ON i.film_id = f.film_id  
-JOIN rental r ON r.inventory_id = i.inventory_id  
-ORDER BY rental_date DESC, title  
-LIMIT 5;  
-
-### Задание 4
-SELECT REPLACE(LOWER(first_name),'ll', 'pp'), LOWER(last_name) FROM customer  
-WHERE first_name LIKE '%Kelly%' OR first_name LIKE '%Willie%';  
-
-### Задание 5*
-SELECT  
-SUBSTRING_INDEX(email, '@', 1) AS before_at,  
-SUBSTRING_INDEX(email, '@', -1) AS after_at  
-FROM customer;  
-
-### Задание 6*
-SELECT  
-CONCAT(UPPER(LEFT((SUBSTRING_INDEX(email, '@', 1)), 1)), LOWER(SUBSTRING(SUBSTRING_INDEX(email, '@', 1), 2))) AS before_at,  
-CONCAT(UPPER(LEFT((SUBSTRING_INDEX(email, '@', -1)), 1)), LOWER(SUBSTRING(SUBSTRING_INDEX(email, '@', -1), 2))) AS after_at  
-FROM customer;
+SELECT DATE_FORMAT(payment_date, '%Y-%m') AS month, COUNT(*) AS rentals, SUM(amount) AS total_amount  
+FROM payment GROUP BY month ORDER BY total_amount DESC LIMIT 1;  
