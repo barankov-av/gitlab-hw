@@ -24,4 +24,4 @@ join inventory i on i.inventory_id = r.inventory_id
 join film f on i.film_id = f.film_id  
 group by c.last_name, c.first_name;  
 
-![Скриншот](img2/1.jpg)
+![Скриншот](img/1.jpg)
