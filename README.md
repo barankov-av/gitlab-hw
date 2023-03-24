@@ -14,12 +14,14 @@ FROM information_schema.TABLES WHERE table_schema = 'sakila';
 
 Предлагаемый вариант кода и индекса:  
 
-alter table payment add index idx_rental_payments (payment_date, customer_id);  
+CREATE INDEX payment_date_index ON payment (payment_date);  
 
-select concat(c.last_name, ' ', c.first_name), sum(p.amount)  
+EXPLAIN ANALYZE select concat(c.last_name, ' ', c.first_name), sum(p.amount)  
 from payment p  
-join rental r on p.payment_date = r.rental_date and date(p.payment_date) = '2005-07-30'  
+join rental r on p.payment_date = r.rental_date and p.payment_date >= '2005-07-30' and p.payment_date < '2005-07-31'  
 join customer c on r.customer_id = c.customer_id  
 join inventory i on i.inventory_id = r.inventory_id  
 join film f on i.film_id = f.film_id  
 group by c.last_name, c.first_name;  
+
+![Скриншот](img2/1.jpg)
