@@ -1,27 +1,11 @@
-# Домашнее задание к занятию "12.5. «Индексы» - Баранков Антон"
+# Домашнее задание к занятию "12.6. «Репликация и масштабирование. Часть 1» - Баранков Антон"
 
 ### Задание 1
-SELECT SUM(index_length) AS SUM_index, SUM(data_length + index_length) AS SUM_full, SUM(index_length)/SUM(data_length + index_length)*100 AS 'percent_index/full'  
-FROM information_schema.TABLES WHERE table_schema = 'sakila';  
- 
+В репликации master-slave все изменения данных происходят на главном сервере (master) и затем копируются на вторичный сервер (slave). В случае отказа master, slave может стать главным.  
+В репликации master-master все серверы являются главными и могут изменять данные. Каждый сервер копирует изменения на другие серверы, таким образом система согласована и одинакова на всех серверах.  
 
 ### Задание 2
-Для оптимизации:  
-использован оператор JOIN  
-убрана лишняя таблица film, так как она не используется в выражении select  
-оператор where заменен на условие в операторе join  
-операторы distinct и OVER заменены на group by и sum  
-
-Предлагаемый вариант кода и индекса:  
-
-CREATE INDEX payment_date_index ON payment (payment_date);  
-
-EXPLAIN ANALYZE select concat(c.last_name, ' ', c.first_name), sum(p.amount)  
-from payment p  
-join rental r on p.payment_date = r.rental_date and p.payment_date >= '2005-07-30' and p.payment_date < '2005-07-31'  
-join customer c on r.customer_id = c.customer_id  
-join inventory i on i.inventory_id = r.inventory_id  
-join film f on i.film_id = f.film_id  
-group by c.last_name, c.first_name;  
-
 ![Скриншот](img/1.jpg)
+![Скриншот](img/2.jpg)
+![Скриншот](img/3.jpg)
+![Скриншот](img/4.jpg)
