@@ -1,0 +1,73 @@
+terraform {
+  required_providers {
+    yandex = {
+      source = "yandex-cloud/yandex"
+    }
+  }
+  required_version = ">= 0.13"
+}
+
+provider "yandex" {
+  token = "y0_AgAAAAAYp0vQAATuwQAAAADgs-eqt_kSVgw6RDapdwnzMhEWQQRij"
+  cloud_id = "b1gv55a3rl9rtg9oc6el"
+  folder_id = "b1g1d5urcv3b364fst3q"
+}
+
+resource "yandex_mdb_postgresql_cluster" "barankov_posrgresql" {
+  name                = "barankov_postrgresql"
+  environment         = "PRODUCTION"
+
+  config {
+    version = "14"
+    resources {
+      resource_preset_id = "s2.micro"
+      disk_type_id       = "network-ssd"
+      disk_size          = 10
+    }
+    
+  }
+
+  host {
+    zone      = "ru-central1-a"
+    name      = "host-one"
+    subnet_id = yandex_vpc_subnet.my_subnet_one.id
+    assign_public_ip = true
+  }
+  
+  host {
+    zone      = "ru-central1-c"
+    name      = "host-two"
+    subnet_id = yandex_vpc_subnet.my_subnet_two.id
+    assign_public_ip = true
+  }
+  
+  network_id = yandex_vpc_network.my_network.id
+}
+
+resource "yandex_mdb_postgresql_database" "db2" {
+  name       = "db2"
+  owner      = yandex_mdb_postgresql_user.barankov-av.name
+  cluster_id = yandex_mdb_postgresql_cluster.barankov_posrgresql.id
+}
+
+resource "yandex_mdb_postgresql_user" "barankov-av" {
+  name       = "barankov-av"
+  password   = "12345678"
+  cluster_id = yandex_mdb_postgresql_cluster.barankov_posrgresql.id
+}
+
+resource "yandex_vpc_network" "my_network" { name = "my_network" }
+
+resource "yandex_vpc_subnet" "my_subnet_one" {
+  name           = "my_subnet_one"
+  zone           = "ru-central1-a"
+  v4_cidr_blocks = ["192.168.10.0/26"]
+  network_id     = "${yandex_vpc_network.my_network.id}"
+}
+
+resource "yandex_vpc_subnet" "my_subnet_two" {
+  name           = "my_subnet_two"
+  zone           = "ru-central1-c"
+  v4_cidr_blocks = ["192.168.10.64/26"]
+  network_id     = "${yandex_vpc_network.my_network.id}"
+}
