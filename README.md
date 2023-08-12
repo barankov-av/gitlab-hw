@@ -1,27 +1,58 @@
-# Домашнее задание к занятию "2. «SQL»" - Баранков Антон"
+# Домашнее задание к занятию "3. «MySQL»" - Баранков Антон"
 
 ### Задание 1
-docker run --name 1-postgres -e POSTGRES_PASSWORD=123 -d -p 5432:5432 -v /root/psql/datadir:/var/lib/postgresql/data -v /root/psql/backupdir:/var/lib/postgresql/backups postgres:12  
+![Скриншот](img/1.jpg)
 
 ### Задание 2
-![Скриншот](img/2.1.jpg)
-![Скриншот](img/2.2.jpg)
+![Скриншот](img/2.jpg)
 
 ### Задание 3
 ![Скриншот](img/3.jpg)
 
 ### Задание 4
-![Скриншот](img/4.jpg)
+# For advice on how to change settings please see  
+# http://dev.mysql.com/doc/refman/8.1/en/server-configuration-defaults.html
 
-### Задание 5
-![Скриншот](img/5.jpg)
+[mysqld]  
+#
+# Remove leading # and set to the amount of RAM for the most important data
+# cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.
+# innodb_buffer_pool_size = 128M
+#
+# Remove leading # to turn on a very important data integrity option: logging
+# changes to the binary log between backups.
+# log_bin
+#
+# Remove leading # to set options mainly useful for reporting servers.
+# The server defaults are faster for transactions and fast SELECTs.
+# Adjust sizes as needed, experiment to find the optimal values.
+# join_buffer_size = 128M
+# sort_buffer_size = 2M
+# read_rnd_buffer_size = 2M
+# Remove leading # to revert to previous value for default_authentication_plugin,
+# this will increase compatibility with older clients. For background, see:
+# https://dev.mysql.com/doc/refman/8.1/en/server-system-variables.html#sysvar_default_authentication_plugin
+# default-authentication-plugin=mysql_native_password
 
-0.00 - ориентировочная стоимость запуска. Это время, затрачиваемое до начала фазы вывода, например, время на сортировку в узле сортировки.  
-13.00 - ориентировочная общая стоимость. Это делается исходя из предположения, что узел плана выполняется до завершения, т. е. извлекаются все доступные строки.  
-298 - предполагаемое количество строк, выводимых этим узлом плана.  
-244 - расчетная средняя ширина строк, выводимых этим узлом плана (в байтах).  
-Затраты измеряются в произвольных единицах, определяемых параметрами затрат планировщика. Традиционная практика состоит в том, чтобы измерять затраты в единицах дисковых сборщиков страниц.  
+skip-host-cache  
+skip-name-resolve  
+datadir=/var/lib/mysql  
+socket=/var/run/mysqld/mysqld.sock  
+secure-file-priv=/var/lib/mysql-files  
+user=mysql  
 
-### Задание 6
-![Скриншот](img/6.1.jpg)
-![Скриншот](img/6.2.jpg)
+innodb_flush_log_at_trx_commit = 0  
+innodb_file_per_table = 1  
+innodb_file_format = Barracuda  
+innodb_log_buffer_size = 1M  
+innodb_buffer_pool_size = 0.3 * {RAM}  
+innodb_buffer_pool_instances = 8  
+innodb_log_file_size = 100M  
+innodb_log_files_in_group = 2  
+
+pid-file=/var/run/mysqld/mysqld.pid  
+[client]  
+socket=/var/run/mysqld/mysqld.sock  
+
+!includedir /etc/mysql/conf.d/  
+
