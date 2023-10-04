@@ -21,9 +21,5 @@ ${i["name"]}   ansible_host=${i["network_interface"][0]["ip_address"]}
 [storage]
 
 %{~ for i in stor_instance ~}
-  %{ if "${i["network_interface"][0]["nat"]}" != false }
 ${i["name"]}   ansible_host=${i["network_interface"][0]["nat_ip_address"]}
-%{ else }
-${i["name"]}   ansible_host=${i["network_interface"][0]["ip_address"]}
-%{ endif}
 %{~ endfor ~}

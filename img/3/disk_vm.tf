@@ -1,21 +1,20 @@
 resource "yandex_compute_disk" "disks" {
-  count   = 3
+  count   = var.vms_disks["count"]
   name  = "disk-${count.index + 1}"
-  size  = 1
+  size  = var.vms_disks["size"]
 }
-
 
 resource "yandex_compute_instance" "storage" {
   name = "storage"
   resources {
-        cores           = 2
-        memory          = 2
-        core_fraction = 20
+        cores = var.vms_resources["cores"]
+        memory = var.vms_resources["memory"]
+        core_fraction = var.vms_resources["core_fraction"]
   }
 
   boot_disk {
         initialize_params {
-        image_id = "fd8g64rcu9fq5kpfqls0"
+        image_id = var.image_id
         }
   }
 

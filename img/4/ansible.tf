@@ -14,12 +14,12 @@ resource "null_resource" "web_hosts_provision" {
 
 depends_on = [yandex_compute_instance.storage, local_file.inventory_cfg]
 
-  /*provisioner "local-exec" {
+  provisioner "local-exec" {
         command = "cat ~/.ssh/id_ed25519 | ssh-add -"
   }
-*/
 
-provisioner "local-exec" {
+
+  provisioner "local-exec" {
         command = "sleep 90"
   }
 

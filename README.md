@@ -29,6 +29,39 @@
 
 [Файл disk_vm.tf](img/3/disk_vm.tf)
 
+При этом в файле variables.tf указываем:  
+
+```
+variable "vms_disks" {
+  type = map(number) 
+}
+
+variable "vms_resources" {
+  type = map(number) 
+}
+
+variable "image_id" {
+  type = string
+}
+```
+
+А в файле terraform.tfvars указываем:
+
+```
+vms_disks = {
+    count = 3 
+    size = 1 
+}
+
+vms_resources = {
+    cores = 2 
+    memory = 2 
+    core_fraction = 20
+}
+
+image_id = "fd8g64rcu9fq5kpfqls0"
+```
+
 ![Скриншот](img/3/1.JPG)
 
 ### Задание 4
