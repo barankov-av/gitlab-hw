@@ -2,18 +2,18 @@ resource "yandex_compute_instance" "k_instance" {
 
 depends_on = [ yandex_compute_instance.web ]
 
-  for_each = { for vm in local.vms_k: "${vm.vm_name}" => vm }
-  name = each.key
+  count = length(var.vms_k)
+  name = "${var.vms_k[count.index].vm_name}"
   platform_id = "standard-v1"
   resources {
-        cores           = each.value.cpu
-        memory          = each.value.ram
-        core_fraction = each.value.frac
+        cores           = var.vms_k[count.index].cpu
+        memory          = var.vms_k[count.index].ram
+        core_fraction   = var.vms_k[count.index].frac
   }
 
   boot_disk {
         initialize_params {
-        image_id = "fd8g64rcu9fq5kpfqls0"
+        image_id = var.image_id_for
         }
   }
 
@@ -23,27 +23,6 @@ depends_on = [ yandex_compute_instance.web ]
   }
 
   metadata = {
-        ssh-keys = local.ssh
+        ssh-keys = "ubuntu:${file("~/.ssh/id_ed25519.pub")}"
   }
-}
-
-locals {
-  vms_k = [
-        {
-        vm_name = "main"
-        cpu     = 4
-        ram     = 4
-        frac    = 20
-        },
-        {
-        vm_name = "replica"
-        cpu     = 2
-        ram     = 2
-        frac    = 100
-        }
-  ]
-}
-
-locals {
-  ssh = "ubuntu:${file("~/.ssh/id_ed25519.pub")}"
 }
