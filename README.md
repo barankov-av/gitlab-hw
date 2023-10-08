@@ -1,141 +1,45 @@
-# Домашнее задание к занятию "3. «Управляющие конструкции в коде Terraform»" - Баранков Антон"
+# Домашнее задание к занятию "4. «Продвинутые методы работы с Terraform»" - Баранков Антон"
 
 ### Задание 1
-Приложите скриншот входящих правил «Группы безопасности» в ЛК Yandex Cloud или скриншот отказа в предоставлении доступа к preview-версии.  
+1. Возьмите из демонстрации к лекции готовый код для создания ВМ с помощью remote-модуля.  
+2. Создайте одну ВМ, используя этот модуль. В файле cloud-init.yml необходимо использовать переменную для ssh-ключа вместо хардкода. Передайте ssh-ключ в функцию template_file в блоке vars ={}.   Воспользуйтесь примером. Обратите внимание, что ssh-authorized-keys принимает в себя список, а не строку.  
+3. Добавьте в файл cloud-init.yml установку nginx.  
+4. Предоставьте скриншот подключения к консоли и вывод команды sudo nginx -t.  
 
 ![Скриншот](img/1.JPG)
 
 ### Задание 2
-1. Создайте файл count-vm.tf. Опишите в нём создание двух одинаковых ВМ web-1 и web-2 (не web-0 и web-1) с минимальными параметрами, используя мета-аргумент count loop. Назначьте ВМ созданную в первом задании группу безопасности.  
+1. Напишите локальный модуль vpc, который будет создавать 2 ресурса: одну сеть и одну подсеть в зоне, объявленной при вызове модуля, например: ru-central1-a.  
+2. Вы должны передать в модуль переменные с названием сети, zone и v4_cidr_blocks.  
+3. Модуль должен возвращать в root module с помощью output информацию о yandex_vpc_subnet. Пришлите скриншот информации из terraform console о своем модуле. Пример: > module.vpc_dev  
+4. Замените ресурсы yandex_vpc_network и yandex_vpc_subnet созданным модулем. Не забудьте передать необходимые параметры сети из модуля vpc в модуль с виртуальной машиной.  
+5. Откройте terraform console и предоставьте скриншот содержимого модуля. Пример: > module.vpc_dev.  
+6. Сгенерируйте документацию к модулю с помощью terraform-docs.  
 
-[Файл count-vm.tf](img/2/count-vm.tf)
+![Скриншот](img/2.1.JPG)
 
-При этом в файле variables.tf указываем:  
+[Файл Readme.md, сгенерированный с помощью terraform-docs](img/vpc_dev/Readme.md)
 
-```
-variable "instance_config" {
-  type = map(number)
-}
+[Файл main.tf] (img/vpc_dev/main.tf)
 
-variable "image_id_count" {
-  type = string
-}
-```
+[Файл main.tf для модуля vpc_dev] (img/vpc_dev/main.tf)
 
-А в файле terraform.tfvars указываем:
+[Файл outputs.tf для модуля vpc_dev] (img/vpc_dev/outputs.tf)
 
-```
-instance_config = {
-    count = 2
-    cores = 2
-    memory = 1
-    core_fraction = 5
-  }
-
-image_id_count = "fd8tkfhqgbht3sigr37c"
-```
-
-![Скриншот](img/2/2.1.JPG)
-
-![Скриншот](img/2/2.2.JPG)
-
-
-
-2. Создайте файл for_each-vm.tf. Опишите в нём создание двух ВМ с именами "main" и "replica" разных по cpu/ram/disk , используя мета-аргумент for_each loop. Используйте для обеих ВМ одну общую переменную типа list(object({ vm_name=string, cpu=number, ram=number, disk=number })).  
-3. ВМ из пункта 2.2 должны создаваться после создания ВМ из пункта 2.1.  
-4. Используйте функцию file в local-переменной для считывания ключа ~/.ssh/id_rsa.pub и его последующего использования в блоке metadata, взятому из ДЗ 2.  
-5. Инициализируйте проект, выполните код.  
-
-[Файл for_each-vm.tf](img/2/for_each-vm.tf)
-
-При этом в файле variables.tf указываем:  
-
-```
-variable "vms_k" {
-  type = list(object({
-    vm_name = string
-    cpu     = number
-    ram     = number
-    frac    = number
-  }))
-}
-
-variable "image_id_for" {
-  type = string
-}
-```
-
-А в файле terraform.tfvars указываем:
-
-```
-vms_k = [
-    {
-      vm_name = "main"
-      cpu     = 4
-      ram     = 4
-      frac    = 20
-    },
-    {
-      vm_name = "replica"
-      cpu     = 2
-      ram     = 2
-      frac    = 100
-    }
-]
-
-image_id_for = "fd8g64rcu9fq5kpfqls0"
-```
-
-![Скриншот](img/2/2.3.JPG)
+[Файл variables.tf для модуля vpc_dev] (img/vpc_dev/variables.tf)
 
 ### Задание 3
-1. Создайте 3 одинаковых виртуальных диска размером 1 Гб с помощью ресурса yandex_compute_disk и мета-аргумента count в файле disk_vm.tf.  
-2. Создайте в том же файле одиночную(использовать count или for_each запрещено из-за задания №4) ВМ c именем "storage" . Используйте блок dynamic secondary_disk{..} и мета-аргумент for_each для подключения созданных вами дополнительных дисков.  
+1. Выведите список ресурсов в стейте.  
+2. Полностью удалите из стейта модуль vpc.  
+3. Полностью удалите из стейта модуль vm.  
+4. Импортируйте всё обратно. Проверьте terraform plan. Изменений быть не должно. Приложите список выполненных команд и скриншоты процессы.  
 
-[Файл disk_vm.tf](img/3/disk_vm.tf)
+![Скриншот](img/3.1.JPG)
 
-При этом в файле variables.tf указываем:  
+![Скриншот](img/3.2.JPG)
 
-```
-variable "vms_disks" {
-  type = map(number) 
-}
+![Скриншот](img/3.3.JPG)
 
-variable "vms_resources" {
-  type = map(number) 
-}
+![Скриншот](img/3.4.JPG)
 
-variable "image_id" {
-  type = string
-}
-```
-
-А в файле terraform.tfvars указываем:
-
-```
-vms_disks = {
-    count = 3 
-    size = 1 
-}
-
-vms_resources = {
-    cores = 2 
-    memory = 2 
-    core_fraction = 20
-}
-
-image_id = "fd8g64rcu9fq5kpfqls0"
-```
-
-![Скриншот](img/3/1.JPG)
-
-### Задание 4
-1. В файле ansible.tf создайте inventory-файл для ansible. Используйте функцию tepmplatefile и файл-шаблон для создания ansible inventory-файла из лекции. Готовый код возьмите из демонстрации к лекции demonstration2. Передайте в него в качестве переменных группы виртуальных машин из задания 2.1, 2.2 и 3.2, т. е. 5 ВМ.  
-2. Инвентарь должен содержать 3 группы [webservers], [databases], [storage] и быть динамическим, т. е. обработать как группу из 2-х ВМ, так и 999 ВМ.  
-3. Выполните код. Приложите скриншот получившегося файла.  
-
-[Файл ansible.tf](img/4/ansible.tf)
-
-[Файл inventory.tftpl](img/4/inventory.tftpl)
-
-![Скриншот](img/4/1.JPG)
+![Скриншот](img/3.5.JPG)
