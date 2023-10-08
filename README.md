@@ -20,13 +20,13 @@
 
 [Файл Readme.md, сгенерированный с помощью terraform-docs](img/vpc_dev/Readme.md)
 
-[Файл main.tf] (img/vpc_dev/main.tf)
+[Файл main.tf](img/vpc_dev/main.tf)
 
-[Файл main.tf для модуля vpc_dev] (img/vpc_dev/main.tf)
+[Файл main.tf для модуля vpc_dev](img/vpc_dev/main.tf)
 
-[Файл outputs.tf для модуля vpc_dev] (img/vpc_dev/outputs.tf)
+[Файл outputs.tf для модуля vpc_dev](img/vpc_dev/outputs.tf)
 
-[Файл variables.tf для модуля vpc_dev] (img/vpc_dev/variables.tf)
+[Файл variables.tf для модуля vpc_dev](img/vpc_dev/variables.tf)
 
 ### Задание 3
 1. Выведите список ресурсов в стейте.  
