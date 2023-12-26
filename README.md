@@ -34,4 +34,4 @@
 
 [Файл bug.xml](img/bug.xml)
 
-[Файл Other tasks.xml](img/Other tasks.xml)
+[Файл other_tasks.xml](img/other_tasks.xml)
